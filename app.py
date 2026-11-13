@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify
 
 app = Flask(__name__)
@@ -6,7 +5,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return jsonify({
-        "message": "Welcome to Automatic Jenkins CI/CD Deployment!",
+     "message": "My CI/CD Pipeline is Working Successfully!",
         "status": "Application Running",
         "project": "Jenkins Pipeline"
     })
