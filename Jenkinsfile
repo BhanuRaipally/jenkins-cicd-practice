@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Source code is available in Jenkins workspace'
+                echo 'Source code checked out from GitHub'
             }
         }
 
@@ -21,6 +21,14 @@ pipeline {
             steps {
                 sh '''
                     .venv/bin/python -m pytest -v
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                    docker build -t flask-cicd:v1 .
                 '''
             }
         }
