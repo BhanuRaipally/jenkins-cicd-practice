@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -28,9 +29,30 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t flask-cicd:v1 .
+                    docker build -t bhanuraipally/flaskcicd2343:v1 .
                 '''
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        set +x
+                        echo "$DOCKERHUB_TOKEN" | docker login \
+                            -u "$DOCKERHUB_USER" --password-stdin
+
+                        docker push bhanuraipally/flaskcicd2343:v1
+
+                        docker logout
+                    '''
+                }
             }
         }
     }
 }
+
