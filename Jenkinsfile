@@ -53,6 +53,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to EC2') {
+            steps {
+                sh '''
+                    docker rm -f flask-app || true
+
+                    docker run -d \
+                        --name flask-app \
+                        --restart unless-stopped \
+                        --memory=128m \
+                        -p 5000:5000 \
+                        bhanuraipally/flaskcicd2343:v1
+                '''
+            }
+        }
     }
 }
 
